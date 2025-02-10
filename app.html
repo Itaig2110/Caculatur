@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>calculator</title>
+    <style>
+        button {
+            width: 467.2px;
+            height: 125px;
+            border: 3px solid #90be6d;
+            background-color: white;
+        }
+        #equal {
+            width: 939px;
+        }
+        body {
+            background-color: black;
+            border: 3px solid #90be6d;
+        }
+        h3 {
+            text-align: center;
+            color: #90be6d;
+        }
+        h1 {
+            text-align: center;
+            color: #90be6d;
+        }
+        #AC {
+            width: 1900px;
+        }
+        #p {
+            color: #90be6d;
+        }
+    </style>
+  </head>
+  <body>
+      <h1 class="title">calculator !</h1>
+      <h3 id="Main">0</h3>
+      <p id="p"></p>
+      <button onclick="AC()" id="AC">AC</button><br />
+      <button onclick="First(1)">1</button>
+      <button onclick="First(2)">2</button>
+      <button onclick="First(3)">3</button>
+      <button onclick="FirstOperator('+')">+</button><br />
+      <button onclick="First(4)">4</button>
+      <button onclick="First(5)">5</button>
+      <button onclick="First(6)">6</button>
+      <button onclick="FirstOperator('-')">-</button><br />
+      <button onclick="First(7)">7</button>
+      <button onclick="First(8)">8</button>
+      <button onclick="First(9)">9</button>
+      <button onclick="FirstOperator('*')">*</button><br />
+      <button onclick="First(0)">0</button>
+      <button id="equal" onclick="Equals()">=</button>
+      <button onclick="FirstOperator('/')">/</button>
+
+      <script>
+        const Main = document.getElementById("Main");
+        let FirstNumber = 0, SeccondNumber = 0, operator = "", result = 0, enteringSeccondNumber = false, h3Text = "";
+
+        // עדכון המסך והתצוגה
+        function updateDisplay(x) {
+            h3Text=h3Text+String(x);
+            Main.innerText=h3Text;
+        }
+
+        function First(value) {
+            if(h3Text==result){
+                h3Text="";
+                result=0;
+                FirstNumber=0;                
+            }
+            if (enteringSeccondNumber && value !== '+' && value !== '-' && value !== '*' && value !== '/') {
+                SeccondNumber = SeccondNumber * 10 + parseInt(value);
+            } else {
+                FirstNumber = FirstNumber * 10 + parseInt(value);
+            }
+            
+            updateDisplay(value);
+        }
+
+        // פונקציה לאיפוס
+        function AC() {
+            FirstNumber = 0;
+            SeccondNumber = 0;
+            operator = "";
+            result = 0;
+            enteringSeccondNumber = false;
+            h3Text = "";
+            Main.innerText = "0";
+        }
+
+        // פונקציה לחשב את התוצאה
+        function Equals() {
+            if (operator === "") return; // אם לא בוצעה פעולה, אין חישוב
+            if (SeccondNumber === 0 && operator === "/") {
+                Main.innerText = "Error";
+                return;
+            }
+
+            // מבצע את החישוב בהתאם לפעולה שנבחרה
+            switch (operator) {
+                case '+':
+                    result = FirstNumber + SeccondNumber;
+                    break;
+                case '-':
+                    result = FirstNumber - SeccondNumber;
+                    break;
+                case '*':
+                    result = FirstNumber * SeccondNumber;
+                    break;
+                case '/':
+                    result = FirstNumber / SeccondNumber;
+                    break;
+            }
+
+            h3Text=result;
+            Main.innerText = result;
+            FirstNumber = result;  // מגדירים את התוצאה כ-FirstNumber
+            SeccondNumber = 0;  // מאפסים את SeccondNumber
+            operator = "";  // מאפסים את הפעולה
+            enteringSeccondNumber = false; // מאפסים את ההכנסה של המספר השני
+        }
+
+        function FirstOperator(op) {
+            if (FirstNumber !== 0 && SeccondNumber !== 0) {
+                Equals();  // אם יש שני מספרים, מבצעים חישוב קודם
+            }
+            operator = op; // מגדירים את הפעולה שנבחרה
+            enteringSeccondNumber = true; // מתחילים להכניס את המספר השני
+            updateDisplay(op); // עדכון המסך עם הפעולה
+        }
+      </script>
+  </body>
+</html>

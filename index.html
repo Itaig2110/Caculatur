@@ -11,9 +11,6 @@
             font-size: 70px;
             border-radius: 100px;
         }
-        #zero {
-            width: 1410px;
-        }
         body {
             background-color: black;
         }
@@ -67,6 +64,8 @@
       <button onclick="First(9)">9</button>
       <button id="operator" onclick="FirstOperator('/')">/</button><br />
       <button id="zero" onclick="First(0)">0</button>
+      <button onclick="FirstOperator('^')">^</button>
+      <button onclick="FirstOperator('squr')">squr</button>
       <button id="equal" onclick="Equals()">=</button>
       
       <script>
@@ -134,6 +133,12 @@
                     break;
                 case '/':
                     result = FirstNumber / SeccondNumber;
+                    break;
+                case '^':
+                    result = FirstNumber ** SeccondNumber;
+                    break;
+                case 'squr':
+                    result = Math.pow(FirstNumber, 1/SeccondNumber);
                     break;
             }
             h3Text = result;

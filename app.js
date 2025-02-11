@@ -7,7 +7,7 @@ const path = require('path');
 
 
 
-app.get('/calculator',(req,res)=>{
+app.get('/',(req,res)=>{
     res.sendFile(path.join(__dirname,"index.html"));
 });
 app.use((req,res)=>{

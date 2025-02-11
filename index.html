@@ -5,28 +5,31 @@
     <style>
         button {
             width: 467.2px;
-            height: 125px;
-            border: 3px solid #90be6d;
-            background-color: white;
+            height: 120px;
+            border: 3px solid #6bf600;
+            background-color: rgb(150, 149, 149);
+            font-size: 70px;
         }
-        #equal {
-            width: 939px;
+        #zero {
+            width: 1410px;
         }
         body {
-            background-color: black;
-            border: 3px solid #90be6d;
-            font-size: 100px;
+            background-color: rgb(9, 9, 95);
         }
         h3 {
             text-align: center;
-            color: #90be6d;
+            color: #6bf600;
+            font-size: 35px;
+
         }
         h1 {
             text-align: center;
-            color: #90be6d;
+            color: #6bf600;            
+            font-size: 35px;
+
         }
         #AC {
-            width: 1900px;
+            width: 939px;
         }
         #p {
             color: #90be6d;
@@ -37,28 +40,37 @@
       <h1 class="title">calculator !</h1>
       <h3 id="Main">0</h3>
       <p id="p"></p>
-      <button onclick="AC()" id="AC">AC</button><br />
+      <button onclick="AC()" id="AC">AC</button>
+      <button onclick="DEL()">DEL</button>
+      <button onclick="FirstOperator('+')">+</button><br />
       <button onclick="First(1)">1</button>
       <button onclick="First(2)">2</button>
       <button onclick="First(3)">3</button>
-      <button onclick="FirstOperator('+')">+</button><br />
+      <button onclick="FirstOperator('-')">-</button><br />
       <button onclick="First(4)">4</button>
       <button onclick="First(5)">5</button>
       <button onclick="First(6)">6</button>
-      <button onclick="FirstOperator('-')">-</button><br />
+      <button onclick="FirstOperator('*')">*</button><br />
       <button onclick="First(7)">7</button>
       <button onclick="First(8)">8</button>
       <button onclick="First(9)">9</button>
-      <button onclick="FirstOperator('*')">*</button><br />
-      <button onclick="First(0)">0</button>
-      <button id="equal" onclick="Equals()">=</button>
-      <button onclick="FirstOperator('/')">/</button>
+      <button onclick="FirstOperator('/')">/</button><br />
+      <button id="zero" onclick="First(0)">0</button>
+      <button onclick="Equals()">=</button>
+      
 
       <script>
         const Main = document.getElementById("Main");
         let FirstNumber = 0, SeccondNumber = 0, operator = "", result = 0, enteringSeccondNumber = false, h3Text = "";
+        function DEL() {
+            if (h3Text.length === 1) {
+                h3Text = "0";  // מאפס את התצוגה אם יש רק תו אחד
+            } else {
+                h3Text = h3Text.slice(0, -1); // מוחק את התו האחרון
+            }
+            Main.innerText = h3Text; // מעדכן את המסך
+        }
 
-        // עדכון המסך והתצוגה
         function updateDisplay(x) {
             h3Text=h3Text+String(x);
             Main.innerText=h3Text;

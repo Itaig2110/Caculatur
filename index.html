@@ -77,7 +77,7 @@
             if(h3Text==="Error")return;
             if (h3Text.length === 1) {
                 h3Text = "0";
-            } else {
+            } else if(h3Text!=="Error") {
                 h3Text = h3Text.slice(0, -1);
             }
             Main.innerText = h3Text;

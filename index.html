@@ -7,32 +7,43 @@
             width: 467.2px;
             height: 120px;
             border: 3px solid #6bf600;
-            background-color: rgb(150, 149, 149);
+            background-color: #fff;
             font-size: 70px;
+            border-radius: 100px;
         }
         #zero {
             width: 1410px;
         }
         body {
-            background-color: rgb(9, 9, 95);
+            background-color: black;
         }
         h3 {
             text-align: center;
             color: #6bf600;
-            font-size: 35px;
-
+            font-size: 55px;
+            height: 30px;
         }
         h1 {
             text-align: center;
             color: #6bf600;            
-            font-size: 35px;
-
+            font-size: 80px;
+            height: 50px;
         }
         #AC {
             width: 939px;
+            color:orange;
         }
         #p {
             color: #90be6d;
+        }
+        #DEL{
+            color:rgb(191, 191, 0);
+        }
+        #operator{
+            color:blue;
+        }
+        #equal{
+            color:red;
         }
     </style>
   </head>
@@ -41,57 +52,59 @@
       <h3 id="Main">0</h3>
       <p id="p"></p>
       <button onclick="AC()" id="AC">AC</button>
-      <button onclick="DEL()">DEL</button>
-      <button onclick="FirstOperator('+')">+</button><br />
+      <button id="DEL" onclick="DEL()">DEL</button>
+      <button id="operator" onclick="FirstOperator('+')">+</button><br />
       <button onclick="First(1)">1</button>
       <button onclick="First(2)">2</button>
       <button onclick="First(3)">3</button>
-      <button onclick="FirstOperator('-')">-</button><br />
+      <button id="operator" onclick="FirstOperator('-')">-</button><br />
       <button onclick="First(4)">4</button>
       <button onclick="First(5)">5</button>
       <button onclick="First(6)">6</button>
-      <button onclick="FirstOperator('*')">*</button><br />
+      <button id="operator" onclick="FirstOperator('*')">*</button><br />
       <button onclick="First(7)">7</button>
       <button onclick="First(8)">8</button>
       <button onclick="First(9)">9</button>
-      <button onclick="FirstOperator('/')">/</button><br />
+      <button id="operator" onclick="FirstOperator('/')">/</button><br />
       <button id="zero" onclick="First(0)">0</button>
-      <button onclick="Equals()">=</button>
+      <button id="equal" onclick="Equals()">=</button>
       
-
       <script>
         const Main = document.getElementById("Main");
         let FirstNumber = 0, SeccondNumber = 0, operator = "", result = 0, enteringSeccondNumber = false, h3Text = "";
+        
         function DEL() {
+            if(h3Text==="Error")return;
             if (h3Text.length === 1) {
-                h3Text = "0";  // מאפס את התצוגה אם יש רק תו אחד
+                h3Text = "0";
             } else {
-                h3Text = h3Text.slice(0, -1); // מוחק את התו האחרון
+                h3Text = h3Text.slice(0, -1);
             }
-            Main.innerText = h3Text; // מעדכן את המסך
+            Main.innerText = h3Text;
         }
 
         function updateDisplay(x) {
-            h3Text=h3Text+String(x);
-            Main.innerText=h3Text;
+            h3Text += String(x);
+            Main.innerText = h3Text;
         }
 
         function First(value) {
-            if(h3Text==result){
+            if(h3Text==="Error"){
                 h3Text="";
-                result=0;
-                FirstNumber=0;                
             }
-            if (enteringSeccondNumber && value !== '+' && value !== '-' && value !== '*' && value !== '/') {
+            if(h3Text == result){
+                h3Text = "";
+                result = 0;
+                FirstNumber = 0;                
+            }
+            if (enteringSeccondNumber) {
                 SeccondNumber = SeccondNumber * 10 + parseInt(value);
             } else {
                 FirstNumber = FirstNumber * 10 + parseInt(value);
             }
-            
             updateDisplay(value);
         }
 
-        // פונקציה לאיפוס
         function AC() {
             FirstNumber = 0;
             SeccondNumber = 0;
@@ -102,15 +115,13 @@
             Main.innerText = "0";
         }
 
-        // פונקציה לחשב את התוצאה
         function Equals() {
-            if (operator === "") return; // אם לא בוצעה פעולה, אין חישוב
-            if (SeccondNumber === 0 && operator === "/") {
+            if(h3Text==="Error")return;
+            if (operator === "" || FirstNumber===0 || (SeccondNumber===0 && operator === "/")){
                 Main.innerText = "Error";
+                h3Text="Error";
                 return;
-            }
-
-            // מבצע את החישוב בהתאם לפעולה שנבחרה
+            } 
             switch (operator) {
                 case '+':
                     result = FirstNumber + SeccondNumber;
@@ -125,22 +136,27 @@
                     result = FirstNumber / SeccondNumber;
                     break;
             }
-
-            h3Text=result;
-            Main.innerText = result;
-            FirstNumber = result;  // מגדירים את התוצאה כ-FirstNumber
-            SeccondNumber = 0;  // מאפסים את SeccondNumber
-            operator = "";  // מאפסים את הפעולה
-            enteringSeccondNumber = false; // מאפסים את ההכנסה של המספר השני
+            result = result.toLocaleString();
+            h3Text = result;
+            Main.innerText = Main.innerText+'='+ result;
+            FirstNumber = 0;
+            SeccondNumber = 0;
+            operator = "";
+            enteringSeccondNumber = false;
         }
 
         function FirstOperator(op) {
-            if (FirstNumber !== 0 && SeccondNumber !== 0) {
-                Equals();  // אם יש שני מספרים, מבצעים חישוב קודם
+            if(h3Text==="Error")return;
+            if(h3Text==result){
+                FirstNumber=result;
             }
-            operator = op; // מגדירים את הפעולה שנבחרה
-            enteringSeccondNumber = true; // מתחילים להכניס את המספר השני
-            updateDisplay(op); // עדכון המסך עם הפעולה
+            if(operator===""){
+                operator = op;
+                enteringSeccondNumber = true;
+                updateDisplay(op);
+            }else{
+                Main.innerText = "Error"
+            }
         }
       </script>
   </body>

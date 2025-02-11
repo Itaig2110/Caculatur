@@ -30,9 +30,6 @@
             width: 939px;
             color:orange;
         }
-        #p {
-            color: #90be6d;
-        }
         #DEL{
             color:rgb(191, 191, 0);
         }
@@ -45,9 +42,8 @@
     </style>
   </head>
   <body>
-      <h1 class="title">calculator !</h1>
+      <h1>calculator !</h1>
       <h3 id="Main">0</h3>
-      <p id="p"></p>
       <button onclick="AC()" id="AC">AC</button>
       <button id="DEL" onclick="DEL()">DEL</button>
       <button id="operator" onclick="FirstOperator('+')">+</button><br />
@@ -64,8 +60,8 @@
       <button onclick="First(9)">9</button>
       <button id="operator" onclick="FirstOperator('/')">/</button><br />
       <button id="zero" onclick="First(0)">0</button>
-      <button onclick="FirstOperator('^')">^</button>
-      <button onclick="FirstOperator('squr')">squr</button>
+      <button id="operator" onclick="FirstOperator('^')">^</button>
+      <button id="operator" onclick="FirstOperator('squr')">squr</button>
       <button id="equal" onclick="Equals()">=</button>
       
       <script>

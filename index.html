@@ -70,7 +70,7 @@
         
         function DEL() {
             if(h3Text==="Error")return;
-            if (h3Text.length === 1) {
+            if (h3Text.length === 1 || h3Text==="") {
                 h3Text = "0";
             } else if(h3Text!=="Error") {
                 h3Text = h3Text.slice(0, -1);

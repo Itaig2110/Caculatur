@@ -69,10 +69,10 @@
         let FirstNumber = 0, SeccondNumber = 0, operator = "", result = 0, enteringSeccondNumber = false, h3Text = "";
         
         function DEL() {
-            if(h3Text==="Error")return;
-            if (h3Text.length === 1 || h3Text==="") {
+            if(h3Text === "Error") return;
+            if (h3Text.length === 1 || h3Text === "") {
                 h3Text = "0";
-            } else if(h3Text!=="Error") {
+            } else {
                 h3Text = h3Text.slice(0, -1);
             }
             Main.innerText = h3Text;
@@ -84,18 +84,18 @@
         }
 
         function First(value) {
-            if(h3Text==="Error"){
-                h3Text="";
+            if(h3Text === "Error") {
+                h3Text = "";
             }
-            if(h3Text == result){
+            if(h3Text == result) {
                 h3Text = "";
                 result = 0;
                 FirstNumber = 0;                
             }
             if (enteringSeccondNumber) {
-                SeccondNumber = SeccondNumber * 10 + parseInt(value);
+                SeccondNumber = parseInt(SeccondNumber * 10 + parseInt(value));
             } else {
-                FirstNumber = FirstNumber * 10 + parseInt(value);
+                FirstNumber = parseInt(FirstNumber * 10 + parseInt(value));
             }
             updateDisplay(value);
         }
@@ -111,34 +111,34 @@
         }
 
         function Equals() {
-            if(h3Text==="Error")return;
-            if (operator === "" || FirstNumber===0 || (SeccondNumber===0 && operator === "/")){
+            if(h3Text === "Error") return;
+            if (operator === "" || FirstNumber === 0 || (SeccondNumber === 0 && operator === "/")){
                 Main.innerText = "Error";
-                h3Text="Error";
+                h3Text = "Error";
                 return;
             } 
             switch (operator) {
                 case '+':
-                    result = FirstNumber + SeccondNumber;
+                    result = parseInt(FirstNumber) + parseInt(SeccondNumber);
                     break;
                 case '-':
-                    result = FirstNumber - SeccondNumber;
+                    result = parseInt(FirstNumber) - (SeccondNumber);
                     break;
                 case '*':
-                    result = FirstNumber * SeccondNumber;
+                    result = parseInt(FirstNumber) * (SeccondNumber);
                     break;
                 case '/':
-                    result = FirstNumber / SeccondNumber;
+                    result = parseInt(FirstNumber) / (SeccondNumber);
                     break;
                 case '^':
-                    result = FirstNumber ** SeccondNumber;
+                    result = parseInt(FirstNumber) ** (SeccondNumber);
                     break;
                 case 'squr':
-                    result = Math.pow(FirstNumber, 1/SeccondNumber);
+                    result = Math.pow(parseInt(FirstNumber), 1/parseInt(SeccondNumber));
                     break;
             }
             h3Text = result;
-            Main.innerText = Main.innerText+'='+ result.toLocaleString();
+            Main.innerText = Main.innerText + '=' + result.toLocaleString();
             FirstNumber = 0;
             SeccondNumber = 0;
             operator = "";
@@ -146,19 +146,40 @@
         }
 
         function FirstOperator(op) {
-            if(h3Text==="Error")return;
-            if(h3Text==result){
-                FirstNumber=parseInt(result);
-                result=0;
+            if(h3Text === "Error") return;
+            if(operator !== "") { 
+                switch (operator) {
+                    case '+':
+                        result = parseInt(FirstNumber) + parseInt(SeccondNumber);
+                        break;
+                    case '-':
+                        result = parseInt(FirstNumber) - (SeccondNumber);
+                        break;
+                    case '*':
+                        result = parseInt(FirstNumber) * (SeccondNumber);
+                        break;
+                    case '/':
+                        result = parseInt(FirstNumber) / (SeccondNumber);
+                        break;
+                    case '^':
+                        result = parseInt(FirstNumber) ** (SeccondNumber);
+                        break;
+                    case 'squr':
+                        result = Math.pow(parseInt(FirstNumber), 1/parseInt(SeccondNumber));
+                        break;
+                }
+                FirstNumber = parseInt(result);
+                SeccondNumber = 0;
+                operator = "";
+                
+            } else {
+                FirstNumber = parseInt(h3Text);
             }
-            if(operator===""){
-                operator = op;
-                enteringSeccondNumber = true;
-                updateDisplay(op);
-            }else{
-                Main.innerText = "Error"
-            }
+            operator = op;
+            enteringSeccondNumber = true;
+            updateDisplay(op);
         }
+
       </script>
   </body>
 </html>

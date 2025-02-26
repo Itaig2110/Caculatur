@@ -200,7 +200,7 @@
 
         function FirstOperator(op) {
             if (h3Text === "Error") return;
-            if (operator !== "") {
+            if (operator !== "" && SeccondNumber !== 0) {
                 switch (operator) {
                     case '+':
                         result = parseInt(FirstNumber) + parseInt(SeccondNumber);
@@ -226,10 +226,8 @@
                 operator = "";
                 h3Text = result;
                 Main.innerText = result;
-
-
-            } else {
-                FirstNumber = parseInt(h3Text);
+            } else if(operator !== "" && SeccondNumber===0){
+                h3Text = h3Text.slice(0, -1);
             }
             operator = op;
             enteringSeccondNumber = true;

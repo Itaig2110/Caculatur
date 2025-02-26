@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <title>calculator</title>
     <style>
         button {
@@ -11,67 +12,94 @@
             font-size: 70px;
             border-radius: 100px;
         }
+
         body {
             background-color: black;
         }
+
         h3 {
             text-align: center;
             color: #6bf600;
             font-size: 55px;
             height: 30px;
         }
+
         h1 {
             text-align: center;
-            color: #6bf600;            
+            color: #6bf600;
             font-size: 80px;
             height: 50px;
         }
+
         #AC {
             width: 939px;
-            color:orange;
+            color: orange;
         }
-        #DEL{
-            color:rgb(191, 191, 0);
+
+        #DEL {
+            color: rgb(191, 191, 0);
         }
-        #operator{
-            color:blue;
+
+        #operator {
+            color: blue;
         }
-        #equal{
-            color:red;
+
+        #equal {
+            color: red;
         }
     </style>
-  </head>
-  <body>
-      <h1>calculator !</h1>
-      <h3 id="Main">0</h3>
-      <button onclick="AC()" id="AC">AC</button>
-      <button id="DEL" onclick="DEL()">DEL</button>
-      <button id="operator" onclick="FirstOperator('+')">+</button><br />
-      <button onclick="First(1)">1</button>
-      <button onclick="First(2)">2</button>
-      <button onclick="First(3)">3</button>
-      <button id="operator" onclick="FirstOperator('-')">-</button><br />
-      <button onclick="First(4)">4</button>
-      <button onclick="First(5)">5</button>
-      <button onclick="First(6)">6</button>
-      <button id="operator" onclick="FirstOperator('*')">*</button><br />
-      <button onclick="First(7)">7</button>
-      <button onclick="First(8)">8</button>
-      <button onclick="First(9)">9</button>
-      <button id="operator" onclick="FirstOperator('/')">/</button><br />
-      <button id="zero" onclick="First(0)">0</button>
-      <button id="operator" onclick="FirstOperator('^')">^</button>
-      <button id="operator" onclick="FirstOperator('squr')">squr</button>
-      <button id="equal" onclick="Equals()">=</button>
-      
-      <script>
+</head>
+
+<body>
+    <h1>calculator !</h1>
+    <h3 id="Main">0</h3>
+    <button onclick="AC()" id="AC">AC</button>
+    <button id="DEL" onclick="DEL()">DEL</button>
+    <button id="operator" onclick="FirstOperator('+')">+</button><br />
+    <button onclick="First(1)">1</button>
+    <button onclick="First(2)">2</button>
+    <button onclick="First(3)">3</button>
+    <button id="operator" onclick="minus()">-</button><br />
+    <button onclick="First(4)">4</button>
+    <button onclick="First(5)">5</button>
+    <button onclick="First(6)">6</button>
+    <button id="operator" onclick="FirstOperator('*')">*</button><br />
+    <button onclick="First(7)">7</button>
+    <button onclick="First(8)">8</button>
+    <button onclick="First(9)">9</button>
+    <button id="operator" onclick="FirstOperator('/')">/</button><br />
+    <button id="zero" onclick="First(0)">0</button>
+    <button id="operator" onclick="FirstOperator('^')">^</button>
+    <button id="operator" onclick="FirstOperator('squr')">squr</button>
+    <button id="equal" onclick="Equals()">=</button>
+
+    <script>
+
+        document.addEventListener("keydown", (event) => {
+            console.log(event);
+            if (!isNaN(event.key)) {
+                First(parseInt(event.key));
+            } else if (['+', '/', '*', '^'].includes(event.key)) {
+                FirstOperator(event.key);
+            } else if (event.key === "-") {
+                minus();
+            } else if (event.key === "Backspace") {
+                DEL();
+            } else if (event.key === "Escape") {
+                AC();
+            } else if (event.key === "Enter") {
+                Equals();
+            }
+        });
+
         const Main = document.getElementById("Main");
         let FirstNumber = 0, SeccondNumber = 0, operator = "", result = 0, enteringSeccondNumber = false, h3Text = "";
-        
+
         function DEL() {
-            if(h3Text === "Error") return;
+            if (h3Text === "Error") return;
             if (h3Text.length === 1 || h3Text === "") {
                 h3Text = "0";
+                result = 0;
             } else {
                 h3Text = h3Text.slice(0, -1);
             }
@@ -84,20 +112,45 @@
         }
 
         function First(value) {
-            if(h3Text === "Error") {
-                h3Text = "";
+            if (h3Text === "Error") {
+                h3Text = "";v
             }
-            if(h3Text == result) {
+            if (h3Text == result) {
                 h3Text = "";
                 result = 0;
-                FirstNumber = 0;                
+                FirstNumber = 0;
             }
             if (enteringSeccondNumber) {
-                SeccondNumber = parseInt(SeccondNumber * 10 + parseInt(value));
+                if (SeccondNumber === "-") {
+                    SeccondNumber = -value;
+                } else if (SeccondNumber < 0) {
+                    SeccondNumber = parseInt(SeccondNumber * 10 - parseInt(value));
+                } else {
+                    SeccondNumber = parseInt(SeccondNumber * 10 + parseInt(value));
+                }
             } else {
-                FirstNumber = parseInt(FirstNumber * 10 + parseInt(value));
+                if (FirstNumber === "-") {
+                    FirstNumber = -value;
+                } else if (FirstNumber < 0) {
+                    FirstNumber = parseInt(FirstNumber * 10 - parseInt(value));
+                } else {
+                    FirstNumber = parseInt(FirstNumber * 10 + parseInt(value));
+                }
             }
             updateDisplay(value);
+        }
+
+        function minus() {
+            if (FirstNumber === 0) {
+                FirstNumber = "-";
+                Main.innerText = "-";
+                h3Text = "-";
+            } else if (enteringSeccondNumber && SeccondNumber == 0) {
+                SeccondNumber = "-";
+                updateDisplay("-");
+            } else {
+                FirstOperator("-");
+            }
         }
 
         function AC() {
@@ -111,43 +164,11 @@
         }
 
         function Equals() {
-            if(h3Text === "Error") return;
-            if (operator === "" || FirstNumber === 0 || (SeccondNumber === 0 && operator === "/")){
+            if (h3Text === "Error") return;
+            if (operator === "" || FirstNumber === 0 || (SeccondNumber === 0 && operator === "/")) {
                 Main.innerText = "Error";
                 h3Text = "Error";
-                return;
-            } 
-            switch (operator) {
-                case '+':
-                    result = parseInt(FirstNumber) + parseInt(SeccondNumber);
-                    break;
-                case '-':
-                    result = parseInt(FirstNumber) - (SeccondNumber);
-                    break;
-                case '*':
-                    result = parseInt(FirstNumber) * (SeccondNumber);
-                    break;
-                case '/':
-                    result = parseInt(FirstNumber) / (SeccondNumber);
-                    break;
-                case '^':
-                    result = parseInt(FirstNumber) ** (SeccondNumber);
-                    break;
-                case 'squr':
-                    result = Math.pow(parseInt(FirstNumber), 1/parseInt(SeccondNumber));
-                    break;
-            }
-            h3Text = result;
-            Main.innerText = Main.innerText + '=' + result.toLocaleString();
-            FirstNumber = 0;
-            SeccondNumber = 0;
-            operator = "";
-            enteringSeccondNumber = false;
-        }
-
-        function FirstOperator(op) {
-            if(h3Text === "Error") return;
-            if(operator !== "") { 
+            } else {
                 switch (operator) {
                     case '+':
                         result = parseInt(FirstNumber) + parseInt(SeccondNumber);
@@ -165,13 +186,48 @@
                         result = parseInt(FirstNumber) ** (SeccondNumber);
                         break;
                     case 'squr':
-                        result = Math.pow(parseInt(FirstNumber), 1/parseInt(SeccondNumber));
+                        result = Math.pow(parseInt(FirstNumber), 1 / parseInt(SeccondNumber));
+                        break;
+                }
+                h3Text = result;
+                Main.innerText = Main.innerText + '=' + result.toLocaleString();
+            }
+            FirstNumber = 0;
+            SeccondNumber = 0;
+            operator = "";
+            enteringSeccondNumber = false;
+        }
+
+        function FirstOperator(op) {
+            if (h3Text === "Error") return;
+            if (operator !== "") {
+                switch (operator) {
+                    case '+':
+                        result = parseInt(FirstNumber) + parseInt(SeccondNumber);
+                        break;
+                    case '-':
+                        result = parseInt(FirstNumber) - (SeccondNumber);
+                        break;
+                    case '*':
+                        result = parseInt(FirstNumber) * (SeccondNumber);
+                        break;
+                    case '/':
+                        result = parseInt(FirstNumber) / (SeccondNumber);
+                        break;
+                    case '^':
+                        result = parseInt(FirstNumber) ** (SeccondNumber);
+                        break;
+                    case 'squr':
+                        result = Math.pow(parseInt(FirstNumber), 1 / parseInt(SeccondNumber));
                         break;
                 }
                 FirstNumber = parseInt(result);
                 SeccondNumber = 0;
                 operator = "";
-                
+                h3Text = result;
+                Main.innerText = result;
+
+
             } else {
                 FirstNumber = parseInt(h3Text);
             }
@@ -180,6 +236,7 @@
             updateDisplay(op);
         }
 
-      </script>
-  </body>
+    </script>
+</body>
+
 </html>

@@ -46,7 +46,7 @@
         }
 
         #point{
-            color:rgb(1, 181, 181);
+            color:rgb(1, 186, 186);
         }
 
         #operator {
@@ -106,7 +106,7 @@
         });
 
         const Main = document.getElementById("Main");
-        let FirstNumber = 0, SeccondNumber = 0, operator = "", result = 0, enteringSeccondNumber = false, h3Text = "" ,pointFirst = false, pointSeccond = false;
+        let FirstNumber = 0, SeccondNumber = 0, operator = "", result = 0, enteringSeccondNumber = false, h3Text = "" ,pointFirst = false, pointSeccond = false , FirstZero = "" , SeccondZero = "";
 
         function DEL() {
             if (h3Text === "Error") return;
@@ -135,17 +135,32 @@
             }
             if (enteringSeccondNumber) {
                 if(pointSeccond){
+                    if(value === 0){
+                        SeccondZero += "0";
+                    }
                     if (SeccondNumber < 0) {
-                        if(String(SeccondNumber).length === 1){
-                            SeccondNumber = parseFloat(SeccondNumber - (value * 10**(-1*(String(SeccondNumber).length))));
+                        if(SeccondZero!=="" && value !== 0 && String(SeccondNumber).length === 1){
+                            SeccondNumber = parseFloat("-" + String(SeccondNumber) + "." + SeccondZero + String(value));
+                            SeccondZero = "";
+                        } else if(SeccondZero!=="" && value !== 0){
+                            SeccondNumber = parseFloat("-" + String(SeccondNumber) + SeccondZero + String(value));
+                            SeccondZero = "";
+                        } else if(String(SeccondNumber).length === 1){
+                            SeccondNumber = parseFloat("-" + String(SeccondNumber) + "." + String(value));
                         } else{
-                            SeccondNumber = parseFloat(SeccondNumber - (value * 10**(-1*(String(SeccondNumber).length -1))));
+                            SeccondNumber = parseFloat("-" + String(SeccondNumber) + String(value));
                         }
                     } else {
-                        if(String(SeccondNumber).length === 1){
-                            SeccondNumber = parseFloat(SeccondNumber + (value * 10**(-1*(String(SeccondNumber).length))));
+                        if(SeccondZero!=="" && value !== 0 && String(SeccondNumber).length === 1){
+                            SeccondNumber = parseFloat(String(SeccondNumber) + "." + SeccondZero + String(value));
+                            SeccondZero = "";
+                        } else if(SeccondZero!=="" && value !== 0){
+                            SeccondNumber = parseFloat(String(SeccondNumber) + SeccondZero + String(value));
+                            SeccondZero = "";
+                        } else if(String(SeccondNumber).length === 1){
+                            SeccondNumber = parseFloat(String(SeccondNumber) + "." + String(value));
                         } else{
-                            SeccondNumber = parseFloat(SeccondNumber + (value * 10**(-1*(String(SeccondNumber).length -1))));
+                            SeccondNumber = parseFloat(String(SeccondNumber) + String(value));
                         }
                     }
                 } else{
@@ -160,26 +175,40 @@
     
             } else {
                 if(pointFirst){
+                    if(value === 0){
+                        FirstZero += "0";
+                    }
                     if (FirstNumber < 0) {
-                        if(String(FirstNumber).length === 1){
-                            FirstNumber = parseFloat(FirstNumber - (value * 10**(-1*(String(FirstNumber).length))));
+                        if(FirstZero!=="" && value !== 0 && String(FirstNumber).length === 1){
+                            FirstNumber = parseFloat("-" + String(FirstNumber) + "." + FirstZero + String(value));
+                            FirstZero = "";
+                        } else if(FirstZero!=="" && value !== 0){
+                            FirstNumber = parseFloat("-" + String(FirstNumber) + FirstZero + String(value));
+                            FirstZero = "";
+                        } else if(String(FirstNumber).length === 1){
+                            FirstNumber = parseFloat("-" + String(FirstNumber) + "." + String(value));
                         } else{
-                            FirstNumber = parseFloat(FirstNumber - (value * 10**(-1*(String(FirstNumber).length -1))));
+                            FirstNumber = parseFloat("-" + String(FirstNumber) + String(value));
                         }
                     } else {
-                        if(String(FirstNumber).length === 1){
-                            FirstNumber = parseFloat(FirstNumber + (value * 10**(-1*(String(FirstNumber).length))));
+                        if(FirstZero!=="" && value !== 0 && String(FirstNumber).length === 1){
+                            FirstNumber = parseFloat(String(FirstNumber) + "." + FirstZero + String(value));
+                            FirstZero = "";
+                        } else if(FirstZero!=="" && value !== 0){
+                            FirstNumber = parseFloat(String(FirstNumber) + FirstZero + String(value));
+                            FirstZero = "";
+                        } else if(String(FirstNumber).length === 1){
+                            FirstNumber = parseFloat(String(FirstNumber) + "." + String(value));
                         } else{
-                            FirstNumber = parseFloat(FirstNumber + (value * 10**(-1*(String(FirstNumber).length -1))));
+                            FirstNumber = parseFloat(String(FirstNumber) + String(value));
                         }
                     }
-                } else{
+                }else{
                     if (FirstNumber === "-") {
                         FirstNumber = -value;
                     } else if (FirstNumber < 0) {
                         FirstNumber = parseFloat(FirstNumber * 10 - parseFloat(value));
                     } else {
-
                         FirstNumber = parseFloat(FirstNumber * 10 + parseFloat(value));
                     }
                 }
@@ -262,6 +291,10 @@
 
         function FirstOperator(op) {
             if (h3Text === "Error") return;
+            if(h3Text == result){
+                FirstNumber = result;
+                result = 0;
+            }
             if (operator !== "" && SeccondNumber !== 0) {
                 switch (operator) {
                     case '+':

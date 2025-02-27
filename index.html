@@ -5,7 +5,7 @@
     <title>calculator</title>
     <style>
         button {
-            width: 467.2px;
+            width: 367.2px;
             height: 120px;
             border: 3px solid #6bf600;
             background-color: #fff;
@@ -32,12 +32,21 @@
         }
 
         #AC {
-            width: 939px;
+            width: 740px;
             color: orange;
         }
 
         #DEL {
             color: rgb(191, 191, 0);
+            width: 1110px;
+        }
+        
+        #zero{
+            width: 740px;
+        }
+
+        #point{
+            color:rgb(1, 181, 181);
         }
 
         #operator {
@@ -46,6 +55,7 @@
 
         #equal {
             color: red;
+            width: 740px;
         }
     </style>
 </head>
@@ -53,25 +63,25 @@
 <body>
     <h1>calculator !</h1>
     <h3 id="Main">0</h3>
-    <button onclick="AC()" id="AC">AC</button>
-    <button onclick="point()">.</button>
     <button id="DEL" onclick="DEL()">DEL</button>
-    <button id="operator" onclick="FirstOperator('+')">+</button><br />
+    <button onclick="AC()" id="AC">AC</button><br />
     <button onclick="First(1)">1</button>
     <button onclick="First(2)">2</button>
     <button onclick="First(3)">3</button>
+    <button id="operator" onclick="FirstOperator('+')">+</button>
     <button id="operator" onclick="minus()">-</button><br />
     <button onclick="First(4)">4</button>
     <button onclick="First(5)">5</button>
     <button onclick="First(6)">6</button>
-    <button id="operator" onclick="FirstOperator('*')">*</button><br />
+    <button id="operator" onclick="FirstOperator('*')">*</button>
+    <button id="operator" onclick="FirstOperator('^')">^</button><br />
     <button onclick="First(7)">7</button>
     <button onclick="First(8)">8</button>
     <button onclick="First(9)">9</button>
-    <button id="operator" onclick="FirstOperator('/')">/</button><br />
+    <button id="operator" onclick="FirstOperator('/')">/</button>
+    <button id="operator" onclick="FirstOperator('squr')">squr</button><br />
     <button id="zero" onclick="First(0)">0</button>
-    <button id="operator" onclick="FirstOperator('^')">^</button>
-    <button id="operator" onclick="FirstOperator('squr')">squr</button>
+    <button id ="point" onclick="point()">.</button>
     <button id="equal" onclick="Equals()">=</button>
 
     <script>

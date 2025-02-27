@@ -41,6 +41,10 @@
             width: 1110px;
         }
 
+        #timesTen{
+            color:purple ;
+        }
+
         #point{
             color:rgb(1, 186, 186);
         }
@@ -78,7 +82,7 @@
     <button id="operator" onclick="FirstOperator('squr')">squr</button><br />
     <button id="zero" onclick="First(0)">0</button>
     <button id ="point" onclick="point()">.</button>
-    <button onclick="FirstOperator('*10^')">*10</button>
+    <button id="timesTen" onclick="FirstOperator('*10^')">*10^</button>
     <button id="equal" onclick="Equals()">=</button>
 
     <script>
@@ -161,6 +165,7 @@
                 h3Text = "";
                 result = 0;
                 FirstNumber = 0;
+                follow = false;
             }
             if (enteringSeccondNumber) {
                 if(pointSeccond){
@@ -298,7 +303,7 @@
 
         function Equals() {
             if (h3Text === "Error") return;
-            if (operator === "" || FirstNumber === 0 || (SeccondNumber === 0 && operator === "/")) {
+            if (operator === "" || FirstNumber === 0 || (SeccondNumber === 0 && operator === "/") || SeccondNumber === 0) {
                 Main.innerText = "Error";
                 h3Text = "Error";
             } else {

@@ -40,10 +40,6 @@
             color: rgb(191, 191, 0);
             width: 1110px;
         }
-        
-        #zero{
-            width: 740px;
-        }
 
         #point{
             color:rgb(1, 186, 186);
@@ -82,6 +78,7 @@
     <button id="operator" onclick="FirstOperator('squr')">squr</button><br />
     <button id="zero" onclick="First(0)">0</button>
     <button id ="point" onclick="point()">.</button>
+    <button onclick="FirstOperator('*10^')">*10</button>
     <button id="equal" onclick="Equals()">=</button>
 
     <script>
@@ -106,15 +103,47 @@
         });
 
         const Main = document.getElementById("Main");
-        let FirstNumber = 0, SeccondNumber = 0, operator = "", result = 0, enteringSeccondNumber = false, h3Text = "" ,pointFirst = false, pointSeccond = false , FirstZero = "" , SeccondZero = "";
+        let FirstNumber = 0, SeccondNumber = 0, operator = "", result = 0, enteringSeccondNumber = false, h3Text = "" ,pointFirst = false, pointSeccond = false , FirstZero = "" , SeccondZero = "",
+        pointUseFirst = false , pointUseSeccond = false , follow = false;
 
         function DEL() {
             if (h3Text === "Error") return;
+            if(isNaN(h3Text[h3Text.length-1] === false && enteringSeccondNumber)){
+                if(String(SeccondNumber).length === 1){
+                    SeccondNumber = 0;
+                } else{
+                    SeccondNumber = parseFloat(String(SeccondNumber).slice(0, -1));
+                }
+            } else if(!isNaN(h3Text[h3Text.length-1]) && !enteringSeccondNumber){
+                if(String(FirstNumber).length === 1){
+                    FirstNumber = 0;
+                } else{
+                    FirstNumber = parseFloat(String(FirstNumber).slice(0, -1));
+                }
+            } else if(h3Text[h3Text.length-1]==="." && enteringSeccondNumber){
+                pointSeccond = false;
+                pointUseSeccond = false;
+            } else if(h3Text[h3Text.length-1]==="." && !enteringSeccondNumber){
+                pointFirst = false;
+                pointUseFirst = false;
+            } else if(['+', '/', '*', '^'].includes(h3Text[h3Text.length -1])){
+                operator = "";
+            } else if(h3Text[h3Text.length -1] === "-" && FirstNumber==="-"){
+                FirstNumber=0;
+            } else if(h3Text[h3Text.length -1] === "-" && SeccondNumber==="-"){
+                SeccondNumber = 0;
+            } else if(h3Text[h3Text.length -1] === "-"){
+                operator = "";
+            }
             if (h3Text.length === 1 || h3Text === "") {
                 h3Text = "0";
                 result = 0;
             } else {
-                h3Text = h3Text.slice(0, -1);
+                if(h3Text[h3Text.length-1] === "squr"){
+                    h3Text = h3Text.slice(0, -4);
+                } else{
+                    h3Text = h3Text.slice(0, -1);
+                }
             }
             Main.innerText = h3Text;
         }
@@ -128,7 +157,7 @@
             if (h3Text === "Error") {
                 h3Text = "";
             }
-            if (h3Text == result) {
+            if (follow) {
                 h3Text = "";
                 result = 0;
                 FirstNumber = 0;
@@ -139,26 +168,30 @@
                         SeccondZero += "0";
                     }
                     if (SeccondNumber < 0) {
-                        if(SeccondZero!=="" && value !== 0 && String(SeccondNumber).length === 1){
-                            SeccondNumber = parseFloat("-" + String(SeccondNumber) + "." + SeccondZero + String(value));
-                            SeccondZero = "";
-                        } else if(SeccondZero!=="" && value !== 0){
-                            SeccondNumber = parseFloat("-" + String(SeccondNumber) + SeccondZero + String(value));
-                            SeccondZero = "";
-                        } else if(String(SeccondNumber).length === 1){
-                            SeccondNumber = parseFloat("-" + String(SeccondNumber) + "." + String(value));
-                        } else{
-                            SeccondNumber = parseFloat("-" + String(SeccondNumber) + String(value));
-                        }
-                    } else {
-                        if(SeccondZero!=="" && value !== 0 && String(SeccondNumber).length === 1){
+                        if(SeccondZero!=="" && value !== 0 && pointUseSeccond){
                             SeccondNumber = parseFloat(String(SeccondNumber) + "." + SeccondZero + String(value));
+                            pointUseSeccond = false;
                             SeccondZero = "";
                         } else if(SeccondZero!=="" && value !== 0){
                             SeccondNumber = parseFloat(String(SeccondNumber) + SeccondZero + String(value));
                             SeccondZero = "";
-                        } else if(String(SeccondNumber).length === 1){
+                        } else if(pointUseSeccond){
                             SeccondNumber = parseFloat(String(SeccondNumber) + "." + String(value));
+                            pointUseSeccond = false;
+                        } else{
+                            SeccondNumber = parseFloat(String(SeccondNumber) + String(value));
+                        }
+                    } else {
+                        if(SeccondZero!=="" && value !== 0 && pointUseSeccond){
+                            SeccondNumber = parseFloat(String(SeccondNumber) + "." + SeccondZero + String(value));
+                            SeccondZero = "";
+                            pointUseSeccond = false;
+                        } else if(SeccondZero!=="" && value !== 0){
+                            SeccondNumber = parseFloat(String(SeccondNumber) + SeccondZero + String(value));
+                            SeccondZero = "";
+                        } else if(pointUseSeccond){
+                            SeccondNumber = parseFloat(String(SeccondNumber) + "." + String(value));
+                            pointUseSeccond = false;
                         } else{
                             SeccondNumber = parseFloat(String(SeccondNumber) + String(value));
                         }
@@ -179,26 +212,30 @@
                         FirstZero += "0";
                     }
                     if (FirstNumber < 0) {
-                        if(FirstZero!=="" && value !== 0 && String(FirstNumber).length === 1){
-                            FirstNumber = parseFloat("-" + String(FirstNumber) + "." + FirstZero + String(value));
-                            FirstZero = "";
-                        } else if(FirstZero!=="" && value !== 0){
-                            FirstNumber = parseFloat("-" + String(FirstNumber) + FirstZero + String(value));
-                            FirstZero = "";
-                        } else if(String(FirstNumber).length === 1){
-                            FirstNumber = parseFloat("-" + String(FirstNumber) + "." + String(value));
-                        } else{
-                            FirstNumber = parseFloat("-" + String(FirstNumber) + String(value));
-                        }
-                    } else {
-                        if(FirstZero!=="" && value !== 0 && String(FirstNumber).length === 1){
+                        if(FirstZero!=="" && value !== 0 && pointUseFirst){
                             FirstNumber = parseFloat(String(FirstNumber) + "." + FirstZero + String(value));
+                            pointUseFirst = false;
                             FirstZero = "";
                         } else if(FirstZero!=="" && value !== 0){
                             FirstNumber = parseFloat(String(FirstNumber) + FirstZero + String(value));
                             FirstZero = "";
-                        } else if(String(FirstNumber).length === 1){
+                        } else if(pointUseFirst){
                             FirstNumber = parseFloat(String(FirstNumber) + "." + String(value));
+                            pointUseFirst = false;
+                        } else{
+                            FirstNumber = parseFloat(String(FirstNumber) + String(value));
+                        }
+                    } else {
+                        if(FirstZero!=="" && value !== 0 && pointUseFirst){
+                            FirstNumber = parseFloat(String(FirstNumber) + "." + FirstZero + String(value));
+                            FirstZero = "";
+                            pointUseFirst = false;
+                        } else if(FirstZero!=="" && value !== 0){
+                            FirstNumber = parseFloat(String(FirstNumber) + FirstZero + String(value));
+                            FirstZero = "";
+                        } else if(pointUseFirst){
+                            FirstNumber = parseFloat(String(FirstNumber) + "." + String(value));
+                            pointUseFirst = false;
                         } else{
                             FirstNumber = parseFloat(String(FirstNumber) + String(value));
                         }
@@ -218,12 +255,15 @@
 
 
         function point(){
-            if(enteringSeccondNumber){
+            if(enteringSeccondNumber && !pointSeccond){
                 pointSeccond = true;
-            } else{
+                pointUseSeccond = true;
+                updateDisplay(".")
+            } else if(!pointFirst){
                 pointFirst = true;
+                pointUseFirst = true;
+                updateDisplay(".")
             }
-            updateDisplay(".")
         }
 
 
@@ -239,7 +279,7 @@
                 FirstOperator("-");
             }
         }
-
+ 
         function AC() {
             FirstNumber = 0;
             SeccondNumber = 0;
@@ -250,6 +290,10 @@
             Main.innerText = "0";
             pointFirst = false;
             pointSeccond = false;
+            pointUseFirst = false;
+            pointUseSeccond = false;
+            FirstZero = "";
+            SeccondZero = "";
         }
 
         function Equals() {
@@ -277,9 +321,13 @@
                     case 'squr':
                         result = Math.pow(parseFloat(FirstNumber), 1 / parseFloat(SeccondNumber));
                         break;
+                    case '*10^':
+                        result = FirstNumber*10**SeccondNumber;
+                        break;
                 }
+                follow = true;
                 h3Text = result;
-                Main.innerText = Main.innerText + '=' + result.toLocaleString();
+                Main.innerText +=  '=' + result.toLocaleString();
             }
             FirstNumber = 0;
             SeccondNumber = 0;
@@ -287,11 +335,14 @@
             enteringSeccondNumber = false;
             pointFirst = false;
             pointSeccond = false;
+            pointUseFirst = false;
+            pointUseSeccond = false;
         }
 
         function FirstOperator(op) {
             if (h3Text === "Error") return;
-            if(h3Text == result){
+            if(follow){
+                follow = false;
                 FirstNumber = result;
                 result = 0;
             }
@@ -324,7 +375,11 @@
                 pointFirst = false;
                 pointSeccond = false;
             } else if(operator !== "" && SeccondNumber===0){
-                h3Text = h3Text.slice(0, -1);
+                if(operator === "squr"){
+                    h3Text = h3Text.slice(0, -4);
+                } else{
+                    h3Text = h3Text.slice(0, -1);
+                }
             }
             operator = op;
             enteringSeccondNumber = true;

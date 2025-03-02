@@ -271,7 +271,9 @@
                 } else {
                     h3Text = h3Text.slice(0, -1);
                 }
-                Main.innerText = Main.innerText.slice(0, -1);
+                if(Main.innerText.length !== 2){
+                    Main.innerText = Main.innerText.slice(0, -1);
+                }
             }
         }
 

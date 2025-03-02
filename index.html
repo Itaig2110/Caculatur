@@ -269,12 +269,9 @@
                 if (h3Text.length === 1 || h3Text === "") {
                     h3Text = "0";  
                 } else {
-                    if(h3Text[h3Text.length-1] === "squr"){
-                        h3Text = h3Text.slice(0, -4);
-                    } else{
-                        h3Text = h3Text.slice(0, -1);
-                    }
+                    h3Text = h3Text.slice(0, -1);
                 }
+                Main.innerText = Main.innerText.slice(0, -1);
             }
         }
 

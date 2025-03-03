@@ -32,13 +32,16 @@
         }
 
         #AC {
-            width: 39%;
             color: orange;
         }
 
         #DEL {
-            color: rgb(191, 191, 0);
-            
+            width: 19.5%;
+            height: 120px;
+            border: 3px solid #6bf600;
+            background-color: #fff;
+            font-size: 70px;
+            border-radius: 100px;
         }
 
         #timesTen{
@@ -76,13 +79,23 @@
 
         #Quadratic{
             font-size: 30px;
-            width: 39%;
             color:rgb(164, 119, 126)
         }
 
         #equal {
             color: red;
-            width: 39%;
+        }
+
+        #tan{
+            color:rgb(174, 174, 0);
+        }
+
+        #sin{
+            color:rgb(174, 174, 0);
+        }
+
+        #cos{
+            color:rgb(174, 174, 0);
         }
     </style>
 </head>
@@ -90,9 +103,11 @@
 <body>
     <h1>calculator !</h1>
     <h3 id="Main">0</h3>
-    <button id="DEL" onclick="DEL()">DEL</button>
+    <img src="https://www.svgrepo.com/show/523156/backspace.svg" onclick="DEL()" id="DEL"></img>
     <button onclick="AC()" id="AC">AC</button>
-    <button id="Quadratic" onclick="Quadratic()">Quadratic formula mode</button>
+    <button onclick="FirstOperator('cos')" id="cos">cos</button>
+    <button onclick="FirstOperator('sin')" id="sin">sin</button>
+    <button onclick="FirstOperator('tan')" id="tan">tan</button><br />
     <button onclick="First(1)">1</button>
     <button onclick="First(2)">2</button>
     <button onclick="First(3)">3</button>
@@ -112,6 +127,7 @@
     <button id ="point" onclick="point()">.</button>
     <button id="timesTen" onclick="FirstOperator('*10^')">*10^</button>
     <button id="equal" onclick="Equals()">=</button>
+    <button id="Quadratic" onclick="Quadratic()">Quadratic formula mode</button>
 
     <script>
 
@@ -129,13 +145,16 @@
                 DEL();
             } else if (event.key === "Escape") {
                 AC();
-            } else if (event.key === "Enter") {
+            } else if (event.key === "enter") {
                 Equals();
+            } else if (event.key === "m"){
+                Quadratic();
             }
         });
 
         const Main = document.getElementById("Main") , QuadraticB = document.getElementById('Quadratic') , plus = document.getElementById('plus') , squr = document.getElementById('squr') , 
-        times = document.getElementById('times') , timesTimes = document.getElementById('timesTimes') , dived = document.getElementById('dived') , timesTen = document.getElementById('timesTen');
+        times = document.getElementById('times') , timesTimes = document.getElementById('timesTimes') , dived = document.getElementById('dived') , timesTen = document.getElementById('timesTen'), 
+        sin = document.getElementById('sin') , cos = document.getElementById('cos') , tan = document.getElementById('tan');
         let FirstNumber = 0, SeccondNumber = 0, operator = "", result = 0, enteringSeccondNumber = false, h3Text = "" ,pointFirst = false, pointSeccond = false , FirstZero = "" , SeccondZero = "",
         pointUseFirst = false , pointUseSeccond = false , follow = false , QuadraticMod = false , a="" , b="" , c="" , x1="" , x2="" , dis="";
 
@@ -150,6 +169,9 @@
                 timesTimes.disabled = false;
                 dived.disabled = false;
                 timesTen.disabled = false;
+                cos.disabled = false;
+                sin.disabled = false;
+                tan.disabled = false;
                 plus.style.opacity = "1";
                 plus.style.pointerEvents = "auto";
                 squr.style.opacity = "1";
@@ -162,6 +184,12 @@
                 dived.style.pointerEvents = "auto";
                 timesTen.style.opacity = "1";
                 timesTen.style.pointerEvents = "auto";
+                tan.style.opacity = "1";
+                tan.style.pointerEvents = "auto";
+                cos.style.opacity = "1";
+                cos.style.pointerEvents = "auto";
+                sin.style.opacity = "1";
+                sin.style.pointerEvents = "auto";
                 Main.innerText = "0";
                 FirstNumber = 0;
                 SeccondNumber = 0;
@@ -190,6 +218,9 @@
                 timesTimes.disabled = true;
                 dived.disabled = true;
                 timesTen.disabled = true;
+                cos.disabled = true;
+                sin.disabled = true;
+                tan.disabled = true;
                 plus.style.opacity = "0.5";
                 plus.style.pointerEvents = "none";
                 squr.style.opacity = "0.5";
@@ -202,6 +233,12 @@
                 dived.style.pointerEvents = "none";
                 timesTen.style.opacity = "0.5";
                 timesTen.style.pointerEvents = "none";
+                cos.style.opacity = "0.5";
+                cos.style.pointerEvents = "none";
+                sin.style.opacity = "0.5";
+                sin.style.pointerEvents = "none";
+                tan.style.opacity = "0.5";
+                tan.style.pointerEvents = "none";
                 Main.innerText = "a=";
                 FirstNumber = 0;
                 SeccondNumber = 0;
@@ -457,7 +494,8 @@
         function Equals() {
             if(!QuadraticMod){
                 if (h3Text === "Error") return;
-                if (operator === "" || FirstNumber === 0 || (SeccondNumber === 0 && operator === "/") || SeccondNumber === 0 || (operator === "squr" && FirstNumber<0)) {
+                if (operator === "" || (SeccondNumber === 0 && operator === "/") || (SeccondNumber === 0 && operator!=="sin" && operator!=="cos" && operator!=="tan") || 
+                (operator === "squr" && FirstNumber<0) || (operator === "tan" && FirstNumber===90)) {
                     Main.innerText = "Error";
                     h3Text = "Error";
                 } else {
@@ -483,6 +521,16 @@
                         case '*10^':
                             result = FirstNumber*10**SeccondNumber;
                             break;
+                        case 'cos':
+                            result = Math.cos(FirstNumber * (Math.PI / 180));
+                            break;
+                        case 'sin':
+                            result = Math.sin(FirstNumber * (Math.PI / 180));
+                            break;
+                        case 'tan':
+                            result = Math.tan(FirstNumber * (Math.PI / 180));
+                            break;
+                            
                     }
                     follow = true;
                     h3Text = result;
@@ -529,7 +577,12 @@
                     FirstNumber = result;
                     result = 0;
                 }
-                if (operator !== "" && SeccondNumber !== 0) {
+                if(op==="tan" || op === "cos" || op==="sin"){
+                    operator = op;
+                    updateDisplay(op);
+                    return;
+                } 
+                if(operator !== "" && (SeccondNumber !== 0 || op==="tan" || op==="sin" || op==="cos")) {
                     switch (operator) {
                         case '+':
                             result = parseFloat(FirstNumber) + parseFloat(SeccondNumber);
@@ -557,6 +610,8 @@
                     Main.innerText = result;
                     pointFirst = false;
                     pointSeccond = false;
+                } else if(operator === "cos" || operator === "sin" || operator === "tan"){
+                    return;   
                 } else if(operator !== "" && SeccondNumber===0){
                     if(operator === "squr"){
                         h3Text = h3Text.slice(0, -4);
